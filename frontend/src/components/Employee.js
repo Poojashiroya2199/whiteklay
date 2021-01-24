@@ -1,4 +1,4 @@
-import React,{useState} from  "react";
+import React,{useState,useEffect} from  "react";
 import axios from "axios";
 export default function Employee(){
     const [employee,setemployee]=useState({name:"",email:"",role:"",organization:""});
@@ -24,14 +24,13 @@ export default function Employee(){
             axios.post("http://localhost:5000/employee",employeedata)
             .then(function(response){
                 console.log(response);
+                listusers();
+                setemployee({name:"",email:"",role:"",organization:""});
             })
             .catch(function(error){
                 console.log(error);
             })
         }
-    }
-    const deleteuser=()=>{
-        console.log("delete");
     }
     const listusers=()=>{
         axios.get("http://localhost:5000/employeelist")
@@ -43,12 +42,17 @@ export default function Employee(){
             console.log(error)
         });
     }
+    useEffect(() => {
+        listusers();
+    }, [])
+    
     const handledelete=(id)=>{
-        const user=employeelist.filter(employee=>employee._id===id);
-        console.log(user);
-        axios.delete("http://localhost:5000/deleteemployee",user)
+        // const user=employeelist.filter(employee=>employee._id===id);
+        console.log(id);
+        axios.delete("http://localhost:5000/deleteemployee/"+id)
         .then(function(response){
             console.log(response);
+            listusers();
         })
         .catch(function(error){
             console.log(error);
@@ -75,10 +79,7 @@ export default function Employee(){
             </div>
             <div className="add">
                <button onClick={adduser}>Add</button>
-               <button onClick={deleteuser}>Delete</button>
-               <button onClick={listusers}>
-                   All employee
-               </button>
+               
             </div>
             <div className="employeelist">
                 <ul>{

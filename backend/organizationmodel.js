@@ -3,9 +3,8 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
    name:String,
-   email:String,
-   role:String,
-   organization:String,
+   size:Number,
+   description:String,
    _enabled:Boolean
 });
-module.exports = mongoose.model('user', userSchema,"users");   
+module.exports = mongoose.model('organization', userSchema,"organizations");   
